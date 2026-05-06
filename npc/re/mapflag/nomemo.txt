@@ -504,3 +504,4 @@ ant_d02_i	mapflag	nomemo
 itemmall	mapflag	nomemo
 
 bl_depth1	mapflag	noicewall
+1@ffp	mapflag	nomemo

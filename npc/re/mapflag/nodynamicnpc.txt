@@ -138,3 +138,6 @@
 
 // Poring Village
 1@begi	mapflag	nodynamicnpc
+
+// Remnant's Base Camp
+1@ffp	mapflag	nodynamicnpc

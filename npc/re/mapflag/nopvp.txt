@@ -125,3 +125,5 @@ wolfvill	mapflag	pvp	off
 // Cash Mall
 //============================================================
 itemmall	mapflag	pvp	off
+
+1@ffp	mapflag	pvp	off

@@ -1355,8 +1355,13 @@ void pc_makesavestatus(map_session_data *sd) {
 	if(!battle_config.save_clothcolor)
 		sd->status.clothes_color = 0;
 
-	if(!battle_config.save_body_style)
+	if(!battle_config.save_body_style) {
+#if PACKETVER_MAIN_NUM >= 20231220
+		sd->status.body = sd->status.class_;
+#else
 		sd->status.body = 0;
+#endif
+	}
 
 	//Only copy the Cart/Peco/Falcon options, the rest are handled via
 	//status change load/saving. [Skotlex]
@@ -7539,6 +7544,7 @@ uint64 pc_jobid2mapid(uint16 b_class)
 		case JOB_HANBOK:                return MAPID_HANBOK;
 		case JOB_OKTOBERFEST:           return MAPID_OKTOBERFEST;
 		case JOB_SUMMER2:               return MAPID_SUMMER2;
+		case JOB_DRUID:                 return MAPID_DRUID;
 	//2-1 Jobs
 		case JOB_SUPER_NOVICE:          return MAPID_SUPER_NOVICE;
 		case JOB_KNIGHT:                return MAPID_KNIGHT;
@@ -7553,6 +7559,7 @@ uint64 pc_jobid2mapid(uint16 b_class)
 		case JOB_OBORO:                 return MAPID_KAGEROUOBORO;
 		case JOB_SPIRIT_HANDLER:        return MAPID_SPIRIT_HANDLER;
 		case JOB_DEATH_KNIGHT:          return MAPID_DEATH_KNIGHT;
+		case JOB_KARNOS:                return MAPID_KARNOS;
 	//2-2 Jobs
 		case JOB_CRUSADER:              return MAPID_CRUSADER;
 		case JOB_SAGE:                  return MAPID_SAGE;
@@ -7598,6 +7605,7 @@ uint64 pc_jobid2mapid(uint16 b_class)
 		case JOB_BABY_GUNSLINGER:       return MAPID_BABY_GUNSLINGER;
 		case JOB_BABY_NINJA:            return MAPID_BABY_NINJA;
 		case JOB_BABY_SUMMONER:         return MAPID_BABY_SUMMONER;
+		case JOB_BABY_DRUID:            return MAPID_BABY_DRUID;
 	//Baby 2-1 Jobs
 		case JOB_SUPER_BABY:            return MAPID_SUPER_BABY;
 		case JOB_BABY_KNIGHT:           return MAPID_BABY_KNIGHT;
@@ -7610,6 +7618,7 @@ uint64 pc_jobid2mapid(uint16 b_class)
 		case JOB_BABY_REBELLION:        return MAPID_BABY_REBELLION;
 		case JOB_BABY_KAGEROU:
 		case JOB_BABY_OBORO:            return MAPID_BABY_KAGEROUOBORO;
+		case JOB_BABY_KARNOS:           return MAPID_BABY_KARNOS;
 	//Baby 2-2 Jobs
 		case JOB_BABY_CRUSADER:         return MAPID_BABY_CRUSADER;
 		case JOB_BABY_SAGE:             return MAPID_BABY_SAGE;
@@ -7631,6 +7640,7 @@ uint64 pc_jobid2mapid(uint16 b_class)
 		case JOB_NIGHT_WATCH:           return MAPID_NIGHT_WATCH;
 		case JOB_SHINKIRO:
 		case JOB_SHIRANUI:              return MAPID_SHINKIROSHIRANUI;
+		case JOB_ALITEA:                return MAPID_ALITEA;
 	//3-2 Jobs
 		case JOB_ROYAL_GUARD:           return MAPID_ROYAL_GUARD;
 		case JOB_SORCERER:              return MAPID_SORCERER;
@@ -7720,6 +7730,7 @@ int32 pc_mapid2jobid(uint64 class_, int32 sex)
 		case MAPID_HANBOK:                return JOB_HANBOK;
 		case MAPID_OKTOBERFEST:           return JOB_OKTOBERFEST;
 		case MAPID_SUMMER2:               return JOB_SUMMER2;
+		case MAPID_DRUID:                 return JOB_DRUID;
 	//2-1 Jobs
 		case MAPID_SUPER_NOVICE:          return JOB_SUPER_NOVICE;
 		case MAPID_KNIGHT:                return JOB_KNIGHT;
@@ -7733,6 +7744,7 @@ int32 pc_mapid2jobid(uint64 class_, int32 sex)
 		case MAPID_KAGEROUOBORO:          return sex?JOB_KAGEROU:JOB_OBORO;
 		case MAPID_SPIRIT_HANDLER:        return JOB_SPIRIT_HANDLER;
 		case MAPID_DEATH_KNIGHT:          return JOB_DEATH_KNIGHT;
+		case MAPID_KARNOS:                return JOB_KARNOS;
 	//2-2 Jobs
 		case MAPID_CRUSADER:              return JOB_CRUSADER;
 		case MAPID_SAGE:                  return JOB_SAGE;
@@ -7776,6 +7788,7 @@ int32 pc_mapid2jobid(uint64 class_, int32 sex)
 		case MAPID_BABY_GUNSLINGER:       return JOB_BABY_GUNSLINGER;
 		case MAPID_BABY_NINJA:            return JOB_BABY_NINJA;
 		case MAPID_BABY_SUMMONER:         return JOB_BABY_SUMMONER;
+		case MAPID_BABY_DRUID:            return JOB_BABY_DRUID;
 	//Baby 2-1 Jobs
 		case MAPID_SUPER_BABY:            return JOB_SUPER_BABY;
 		case MAPID_BABY_KNIGHT:           return JOB_BABY_KNIGHT;
@@ -7787,6 +7800,7 @@ int32 pc_mapid2jobid(uint64 class_, int32 sex)
 		case MAPID_BABY_STAR_GLADIATOR:   return JOB_BABY_STAR_GLADIATOR;
 		case MAPID_BABY_REBELLION:        return JOB_BABY_REBELLION;
 		case MAPID_BABY_KAGEROUOBORO:     return sex?JOB_BABY_KAGEROU:JOB_BABY_OBORO;
+		case MAPID_BABY_KARNOS:           return JOB_BABY_KARNOS;
 	//Baby 2-2 Jobs
 		case MAPID_BABY_CRUSADER:         return JOB_BABY_CRUSADER;
 		case MAPID_BABY_SAGE:             return JOB_BABY_SAGE;
@@ -7806,6 +7820,7 @@ int32 pc_mapid2jobid(uint64 class_, int32 sex)
 		case MAPID_STAR_EMPEROR:          return JOB_STAR_EMPEROR;
 		case MAPID_NIGHT_WATCH:           return JOB_NIGHT_WATCH;
 		case MAPID_SHINKIROSHIRANUI:      return sex?JOB_SHINKIRO:JOB_SHIRANUI;
+		case MAPID_ALITEA:                return JOB_ALITEA;
 	//3-2 Jobs
 		case MAPID_ROYAL_GUARD:           return JOB_ROYAL_GUARD;
 		case MAPID_SORCERER:              return JOB_SORCERER;
@@ -8160,6 +8175,13 @@ const char* job_name(int32 class_)
 
 	case JOB_SKY_EMPEROR2:
 		return msg_txt( nullptr, 813 );
+
+	case JOB_DRUID:
+	case JOB_BABY_DRUID:
+	case JOB_KARNOS:
+	case JOB_BABY_KARNOS:
+	case JOB_ALITEA:
+		return msg_txt( nullptr, 833 - JOB_DRUID + class_ );
 
 	default:
 		return msg_txt(nullptr,655);
@@ -10919,7 +10941,11 @@ bool pc_jobchange(map_session_data *sd,int32 job, char upper)
 
 	sd->status.class_ = job;
 	// Reset body style before changing job to avoid errors since not every job has a alternate outfit.
-	sd->status.body = sd->status.class_;
+#if PACKETVER_MAIN_NUM >= 20231220
+	sd->status.body = job;
+#else
+	sd->status.body = 0;
+#endif
 
 	fame_flag = pc_famerank(sd->status.char_id,sd->class_&MAPID_SECONDMASK);
 	uint64 previous_class = sd->class_;
@@ -11008,7 +11034,7 @@ bool pc_jobchange(map_session_data *sd,int32 job, char upper)
 	clif_changelook(sd, LOOK_HAIR, sd->vd.look[LOOK_HAIR]); // Update player's head (only matters when switching to or from Doram)
 #endif
 	clif_changelook( sd, LOOK_CLOTHES_COLOR, sd->vd.look[LOOK_CLOTHES_COLOR] );
-	clif_changelook( sd, LOOK_BODY2, sd->vd.look[LOOK_BODY2] );
+	clif_changelook( sd, LOOK_BODY2, sd->status.body );
 	
 	//Update skill tree.
 	pc_calc_skilltree(sd);
@@ -14363,7 +14389,9 @@ void JobDatabase::loadingFinished() {
 			}
 
 			// Extended classes
-			if( ( class_ & MAPID_SECONDMASK ) == MAPID_KAGEROUOBORO || ( class_ & MAPID_SECONDMASK ) == MAPID_REBELLION ){
+			if( ( class_ & MAPID_SECONDMASK ) == MAPID_KAGEROUOBORO ||
+				( class_ & MAPID_SECONDMASK ) == MAPID_REBELLION ||
+				( class_ & MAPID_SECONDMASK ) == MAPID_KARNOS ){
 				max = battle_config.max_extended_parameter;
 				break;
 			}
@@ -15259,7 +15287,9 @@ int16 pc_maxaspd( const map_session_data* sd ) {
 	nullpo_ret(sd);
 
 	return (( sd->class_&JOBL_THIRD) ? battle_config.max_third_aspd : (
-			((sd->class_&MAPID_SECONDMASK) == MAPID_KAGEROUOBORO || (sd->class_&MAPID_SECONDMASK) == MAPID_REBELLION) ? battle_config.max_extended_aspd : (
+			((sd->class_&MAPID_SECONDMASK) == MAPID_KAGEROUOBORO ||
+			(sd->class_&MAPID_SECONDMASK) == MAPID_REBELLION ||
+			(sd->class_&MAPID_SECONDMASK) == MAPID_KARNOS) ? battle_config.max_extended_aspd : (
 			(sd->class_&MAPID_FIRSTMASK) == MAPID_SUMMONER) ? battle_config.max_summoner_aspd : 
 			battle_config.max_aspd ));
 }
