@@ -103,3 +103,5 @@ rockmi2	mapflag	nosave	SavePoint
 // Old Training Ground
 //============================================================
 tra_fild	mapflag	nosave	SavePoint
+
+bl_depth1	mapflag	noicewall

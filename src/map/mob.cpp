@@ -2851,6 +2851,9 @@ int32 mob_getdroprate(block_list *src, std::shared_ptr<s_mob_db> mob, int32 base
 			if (sd->sc.getSCE(SC_PERIOD_RECEIVEITEM_2ND))
 				drop_rate_bonus += sd->sc.getSCE(SC_PERIOD_RECEIVEITEM_2ND)->val1;
 
+			if (sd->sc.getSCE(SC_INDIVIDUAL_RATE))
+                drop_rate_bonus += sd->sc.getSCE(SC_INDIVIDUAL_RATE)->val1;
+
 			int32 cap;
 
 			if (pc_isvip(sd)) { // Increase item drop rate for VIP.
@@ -3248,7 +3251,7 @@ int32 mob_dead(mob_data *md, block_list *src, int32 type)
 		}
 	}
 
-	if( !(type&1) && !map_getmapflag(m, MF_NOMOBLOOT) && !md->state.rebirth && (
+	if( !(type&1) && !map_getmapflag(m, MF_NOMOBLOOT) && !(md->get_bosstype() == BOSSTYPE_NONE && map_getmapflag(m, MF_NOLOOTNORMALMOB)) && !md->state.rebirth && (
 		!md->special_state.ai || //Non special mob
 		battle_config.alchemist_summon_reward == 2 || //All summoned give drops
 		(md->special_state.ai==AI_SPHERE && battle_config.alchemist_summon_reward == 1) //Marine Sphere Drops items.

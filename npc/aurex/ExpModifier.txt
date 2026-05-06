@@ -1,0 +1,57 @@
+-	script	RateSelect	-1,{
+
+OnPCLoginEvent:
+    switch (individual_rate) {
+        case 1:
+            .@exp_rate_multiplier = 100;
+            .@jexp_rate_multiplier = 100;
+            .@drop_rate_bonus = 100;
+            .@rate_description$ = "x1 (Low Rate)";
+            break;
+        case 2:
+            .@exp_rate_multiplier = 2500;
+            .@jexp_rate_multiplier = 2500;
+            .@drop_rate_bonus = 50;
+            .@rate_description$ = "x25 (Mid Rate)";
+            break;
+        case 3:
+            .@exp_rate_multiplier = 5000;
+            .@jexp_rate_multiplier = 5000;
+            .@drop_rate_bonus = 25;
+            .@rate_description$ = "x50 (High Rate)";
+            break;
+        case 4:
+            .@exp_rate_multiplier = 10000;
+            .@jexp_rate_multiplier = 10000;
+            .@drop_rate_bonus = 1;
+            .@rate_description$ = "x100 (Super High Rate)";
+            break;
+        default:
+            mes "[Rate Selector]";
+            mes "Select your preferred server rate for this character.";
+            mes "^FF0000BE CAREFUL: YOU CAN'T CHANGE IT AFTERWARD!^000000";
+            
+            individual_rate = select("Low Rate (x1)|Drop Rate (x100):Mid Rate (x25)|Drop Rate (x50):High Rate (x50)|Drop Rate (x25):Super High Rate (x100)|Drop Rate (x1)");
+            next;
+            goto OnPCLoginEvent;
+    }
+    
+    #exp_rate_multiplier = .@exp_rate_multiplier;
+    #jexp_rate_multiplier = .@jexp_rate_multiplier;
+    
+    if (.@drop_rate_bonus > 0) {
+        sc_start SC_INDIVIDUAL_RATE, 2000000000, .@drop_rate_bonus;
+    }
+
+    dispbottom "Rate aktif: " + .@rate_description$ + " | Drop Bonus: +" + .@drop_rate_bonus + "%";
+    end;
+
+OnNPCKillEvent:
+    .@base_exp = getmonsterinfo(killedrid, MOB_BASEEXP) * #exp_rate_multiplier / 100; 
+    .@job_exp = getmonsterinfo(killedrid, MOB_JOBEXP) * #jexp_rate_multiplier / 100;
+
+    if (.@base_exp > 0 || .@job_exp > 0) {
+        getexp .@base_exp, .@job_exp;
+    }
+    end;
+}

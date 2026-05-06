@@ -473,3 +473,5 @@ for_dun01	mapflag	noteleport
 // Forgotten Area 2
 //============================================================
 for_dun02	mapflag	noteleport
+
+bl_depth1	mapflag	noteleport

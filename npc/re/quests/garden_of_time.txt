@@ -7,10 +7,6 @@
 //= 1.0 Initial release [Atemo]
 //============================================================
 
-function	script	F_mesnavi	{
-	return "<NAVI>[" + getarg(0) + "]<INFO>" + getarg(1) + "," + getarg(2) + "," + getarg(3) + ",0,101,0</INFO></NAVI>";
-}
-
 // Warps
 xmas_fild01,158,246,2	script	Dimensional barrier#got1	GATE_SKYBLUE,2,2,{
 	// Fallthrough
@@ -669,7 +665,7 @@ OnInit:
 	// mes "4th place - none";
 	// mes "5th place - none";
 	// mes "-----------------";
-	// mes "¡Ø The strategy record is updated every 5 minutes.";
+	// mes "ï¿½ï¿½ The strategy record is updated every 5 minutes.";
 	// mes "If recording does not occur immediately, please wait for a while and check.";
 	// close;
 // }

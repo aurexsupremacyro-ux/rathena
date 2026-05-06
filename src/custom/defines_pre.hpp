@@ -9,6 +9,10 @@
  * For detailed guidance on these check http://rathena.org/wiki/SRC/config/
  **/
 
+#define PACKETVER 20260319
 
-
+#define PACKET_OBFUSCATION_KEY1 0x6305d263
+#define PACKET_OBFUSCATION_KEY2 0x36df783b
+#define PACKET_OBFUSCATION_KEY3 0x1396c450
+		
 #endif /* CONFIG_CUSTOM_DEFINES_PRE_HPP */

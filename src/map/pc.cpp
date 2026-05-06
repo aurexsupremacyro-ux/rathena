@@ -6830,7 +6830,7 @@ bool pc_steal_item(map_session_data *sd,block_list *bl, uint16 skill_lv)
 	status_data* md_status = status_get_status_data(*bl);
 
 	if (md->master_id || status_has_mode(md_status, MD_STATUSIMMUNE) || util::vector_exists(status_get_race2(md), RC2_TREASURE) ||
-		map_getmapflag(bl->m, MF_NOMOBLOOT) || // check noloot map flag [Lorky]
+		map_getmapflag(bl->m, MF_NOMOBLOOT) || md->get_bosstype() == BOSSTYPE_NONE && map_getmapflag(bl->m, MF_NOLOOTNORMALMOB) || // check noloot map flag [Lorky]
 		(battle_config.skill_steal_max_tries && //Reached limit of steal attempts. [Lupus]
 			md->state.steal_flag++ >= battle_config.skill_steal_max_tries)
   	) { //Can't steal from
@@ -9726,6 +9726,13 @@ TIMER_FUNC(pc_close_npc_timer){
 void pc_close_npc(map_session_data *sd,int32 flag)
 {
 	nullpo_retv(sd);
+
+	for (const auto &it : sd->npc_id_dynamic) {
+		struct npc_data* nd = map_id2nd( it );
+		if( nd != nullptr && nd->dynamicnpc.owner_char_id != 0 ){
+			nd->dynamicnpc.last_interaction = gettick();
+		}
+	}
 
 	if (sd->npc_id || sd->npc_shopid) {
 		if (sd->state.using_fake_npc) {
